@@ -23,6 +23,23 @@ public class WeeklyScheduling {
     public Map<WeekendShift, Set<Employee>> weekendSched() {
         return weekendSched;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Weekday shifts:\n");
+        for (WeekdayShift shift: weekdaySched.keySet()) {
+            sb.append('\t').append(String.format("%-12s", shift)).append(":\t");
+            weekdaySched.get(shift).forEach(e -> sb.append(e).append(", "));
+            sb.append("\n");
+        }
+        sb.append("Weekend shifts:\n");
+        for (WeekendShift shift: weekendSched.keySet()) {
+            sb.append('\t').append(String.format("%-10s", shift)).append(":\t");
+            weekendSched.get(shift).forEach(e -> sb.append(e).append(", "));
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 
     
 }

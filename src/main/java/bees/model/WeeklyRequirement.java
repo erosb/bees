@@ -15,11 +15,11 @@ public class WeeklyRequirement {
         this.weekendReq = requireNonNull(weekendReq, "weekendReq cannot be null");
     }
 
-    public Map<WeekdayShift, ShiftRequirement> getWeekdayReq() {
+    public Map<WeekdayShift, ShiftRequirement> weekdayReq() {
         return weekdayReq;
     }
 
-    public Map<WeekendShift, ShiftRequirement> getWeekendReq() {
+    public Map<WeekendShift, ShiftRequirement> weekendReq() {
         return weekendReq;
     }
     
