@@ -2,6 +2,7 @@ package bees.model;
 
 import static java.util.Objects.requireNonNull;
 
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
+import static java.lang.String.format;
 public class Problem {
     
     public static Problem getDefault() {
@@ -26,7 +27,7 @@ public class Problem {
         return new Problem(employees, weeklyReq, 2);
     }
     
-    private static Set<Employee> employees(int count, Skill... skills) {
+    public static Set<Employee> employees(int count, Skill... skills) {
         Set<Skill> skillSet = new HashSet<>(Arrays.asList(skills));
         String namePrefix = "Emp " + Arrays.stream(skills)
                 .map(Skill::toString)
@@ -124,6 +125,13 @@ public class Problem {
     
     public Map<WeekendShift, ShiftRequirement> weekendReq() {
         return weekReq.weekendReq();
+    }
+    
+    public Employee employeeByName(String name) {
+        return employees.stream()
+                .filter(e -> e.name().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(format("employee [%s] not found", name)));
     }
 
 }

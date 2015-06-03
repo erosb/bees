@@ -41,5 +41,14 @@ public class WeeklyScheduling {
         return sb.toString();
     }
 
+    public WeekdayShift weekdayShiftOf(Employee e) {
+        for (WeekdayShift candidate: weekdaySched.keySet()) {
+            if (weekdaySched.get(candidate).contains(e)) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
     
 }

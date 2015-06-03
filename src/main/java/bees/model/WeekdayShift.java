@@ -1,7 +1,7 @@
 package bees.model;
 
 public enum WeekdayShift {
-
+    
     MORNING("06:00", "14:00"), DAY("09:00", "17:00"), AFTERNOON("14:00", "22:00"), NIGHT("22:00", "06:00");
 
     private final Interval interval;
@@ -16,6 +16,10 @@ public enum WeekdayShift {
 
     public Interval interval() {
         return interval;
+    }
+    
+    public static int diff(WeekdayShift s1, WeekdayShift s2) {
+        return Math.abs(s1.ordinal() - s2.ordinal());
     }
 
 }
