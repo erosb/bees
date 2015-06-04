@@ -29,7 +29,10 @@ public class SchedulingEvaluator {
             if (shiftEmployees != null) {
                 for (Employee e : shiftEmployees) {
                     for (Skill skill : e.skills()) {
-                        shiftReqs.put(skill, shiftReqs.get(skill) - 1);
+                        Integer prevVal = shiftReqs.get(skill);
+                        if (prevVal != null) {
+                            shiftReqs.put(skill, prevVal - 1);
+                        }
                     }
                 }
             }
@@ -50,7 +53,7 @@ public class SchedulingEvaluator {
         return sched.stream().mapToInt(this::unsatisfiedRequirementCount).sum();
     }
 
-    public int employeePreferenceQuality(List<WeeklyScheduling> sched) {
+    public int employeePreference(List<WeeklyScheduling> sched) {
         int rval = 0;
         for (int i = 0; i < sched.size() - 1; ++i) {
             WeeklyScheduling currWeek = sched.get(i);
@@ -64,6 +67,10 @@ public class SchedulingEvaluator {
             }
         }
         return rval;
+    }
+
+    public Quality quality(List<WeeklyScheduling> weeklyScheds) {
+        return new Quality(unsatisfiedRequirementCount(weeklyScheds), employeePreference(weeklyScheds));
     }
 
 }

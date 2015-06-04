@@ -47,7 +47,7 @@ public class SchedulingEvaluatorTest {
         WeeklyScheduling weekSched2 = new WeeklyScheduling(weekdaySched, weekendSched);
         
         SchedulingEvaluator subject = new SchedulingEvaluator(problem);
-        int actual = subject.employeePreferenceQuality(Arrays.asList(weekSched1, weekSched2));
+        int actual = subject.employeePreference(Arrays.asList(weekSched1, weekSched2));
         assertEquals(-1, actual);
     }
 

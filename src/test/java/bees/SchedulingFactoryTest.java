@@ -17,7 +17,8 @@ public class SchedulingFactoryTest {
     
     @Test
     public void test() {
-        List<WeeklyScheduling> actual = new SchedulingFactory(Problem.getDefault()).randomScheduling(2);
+        Problem problem = Problem.getDefault();
+        List<WeeklyScheduling> actual = new SchedulingFactory(problem, new SchedulingEvaluator(problem)).randomScheduling();
         assertEquals(2, actual.size());
         actual.stream().forEach(this::assertSchedulingIsProperlyFilled);
         System.out.println(actual.get(0));

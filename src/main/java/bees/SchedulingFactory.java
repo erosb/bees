@@ -1,11 +1,13 @@
 package bees;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,6 +15,7 @@ import java.util.stream.IntStream;
 import bees.model.Employee;
 import bees.model.Problem;
 import bees.model.ShiftRequirement;
+import bees.model.Solution;
 import bees.model.WeekdayShift;
 import bees.model.WeekendShift;
 import bees.model.WeeklyScheduling;
@@ -20,9 +23,14 @@ import bees.model.WeeklyScheduling;
 public class SchedulingFactory {
 
     private final Problem problem;
+    
+    private final SchedulingEvaluator evaluator;
+    
+    private final Random random = new Random();
 
-    public SchedulingFactory(Problem problem) {
+    public SchedulingFactory(Problem problem, SchedulingEvaluator evaluator) {
         this.problem = problem;
+        this.evaluator = evaluator;
     }
 
     private WeeklyScheduling randomWeeklyScheduling() {
@@ -57,10 +65,55 @@ public class SchedulingFactory {
         return new WeeklyScheduling(weekdaySched, weekendSched);
     }
 
-    public List<WeeklyScheduling> randomScheduling(int weekCount) {
+    private List<WeeklyScheduling> randomScheduling(int weekCount) {
         return IntStream.range(0, weekCount)
                 .mapToObj(i -> randomWeeklyScheduling())
                 .collect(Collectors.toList());
+    }
+    
+    public Solution create(List<WeeklyScheduling> weeklyScheds) {
+        return new Solution(weeklyScheds, evaluator.quality(weeklyScheds));
+    }
+
+    public Solution randomScheduling() {
+        List<WeeklyScheduling> weeklyScheds = randomScheduling(problem.weekCount());
+        return create(weeklyScheds);
+    }
+    
+    public Solution randomSwap(Solution original) {
+        int weekIdx = random.nextInt(original.size());
+        WeeklyScheduling sched = original.get(weekIdx);
+        Map<WeekdayShift, Set<Employee>> origWeekdaySched = sched.weekdaySched();
+        WeekdayShift fromShift = WeekdayShift.values()[random.nextInt(WeekdayShift.values().length - 1)];
+        WeekdayShift toShift = WeekdayShift.values()[random.nextInt(WeekdayShift.values().length - 1)];
+        List<Employee> fromShiftEmployees = new ArrayList<>(origWeekdaySched.get(fromShift));
+        List<Employee> toShiftEmployees = new ArrayList<>(origWeekdaySched.get(toShift));
+        int fromEmployeeIdx = random.nextInt(fromShiftEmployees.size());
+        int toEmployeeIdx = random.nextInt(toShiftEmployees.size());
+        Employee tmp = fromShiftEmployees.get(fromEmployeeIdx);
+        fromShiftEmployees.set(fromEmployeeIdx, toShiftEmployees.get(toEmployeeIdx));
+        toShiftEmployees.set(toEmployeeIdx, tmp);
+        List<WeeklyScheduling> newSched = new ArrayList<>(original.size());
+        for (int i = 0; i < original.size(); ++i) {
+            WeeklyScheduling origWeeklySched = original.get(i);
+            if (i == weekIdx) {
+                Map<WeekdayShift, Set<Employee>> newWeekdaySched = new HashMap<>();
+                for (WeekdayShift shift: WeekdayShift.values()) {
+                    if (shift == fromShift) {
+                        newWeekdaySched.put(shift, new HashSet<>(fromShiftEmployees));
+                    } else if (shift == toShift) {
+                        newWeekdaySched.put(shift, new HashSet<>(toShiftEmployees));
+                    } else {
+                        newWeekdaySched.put(shift, origWeeklySched.weekdaySched().get(shift));
+                    }
+                }
+                WeeklyScheduling newWeeklySched = new WeeklyScheduling(newWeekdaySched, origWeeklySched.weekendSched());
+                newSched.add(newWeeklySched);
+            } else {
+                newSched.add(origWeeklySched);
+            }
+        }
+        return create(newSched);
     }
 
 }
