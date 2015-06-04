@@ -38,7 +38,7 @@ public class BeeSwarm {
         for (int i = 0; i < beeMovementCount; ++i) {
             moveBees();
         }
-        return Collections.max(swarm);
+        return Collections.min(swarm);
     }
 
     private void moveBees() {

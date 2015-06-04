@@ -11,6 +11,7 @@ import bees.model.Employee;
 import bees.model.Problem;
 import bees.model.Skill;
 import bees.model.WeekdayShift;
+import bees.model.WeekendShift;
 import bees.model.WeeklyScheduling;
 
 public class SchedulingEvaluator {
@@ -26,6 +27,26 @@ public class SchedulingEvaluator {
         for (WeekdayShift shift : problem.weekdayReq().keySet()) {
             HashMap<Skill, Integer> shiftReqs = new HashMap<>(problem.weekdayReq().get(shift));
             Set<Employee> shiftEmployees = sched.weekdaySched().get(shift);
+            if (shiftEmployees != null) {
+                for (Employee e : shiftEmployees) {
+                    for (Skill skill : e.skills()) {
+                        Integer prevVal = shiftReqs.get(skill);
+                        if (prevVal != null) {
+                            shiftReqs.put(skill, prevVal - 1);
+                        }
+                    }
+                }
+            }
+            for (Integer i : shiftReqs.values()) {
+                if (i > 0) {
+                    rval += i;
+                }
+            }
+        }
+        
+        for (WeekendShift shift : problem.weekendReq().keySet()) {
+            HashMap<Skill, Integer> shiftReqs = new HashMap<>(problem.weekendReq().get(shift));
+            Set<Employee> shiftEmployees = sched.weekendSched().get(shift);
             if (shiftEmployees != null) {
                 for (Employee e : shiftEmployees) {
                     for (Skill skill : e.skills()) {

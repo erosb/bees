@@ -50,20 +50,20 @@ public class Solver {
                 .collect(Collectors.toList());
         for (int i = 0; i < iterationCount; ++i) {
             explorerBees = runSwarms(explorerBees);
-            System.out.println(i + "th iteration: " + Collections.max(explorerBees).quality());
+            System.out.println(i + "th iteration: " + Collections.min(explorerBees).quality());
         }
         executor.shutdown();
-        explorerBees.stream().forEach(bee -> {
-            System.out.println("\t"+bee.quality());
-        });
+        System.out.println(Collections.min(explorerBees));
         Solution tst = explorerBees.get(0);
     }
 
     private List<Solution> runSwarms(List<Solution> explorerBees) {
         Collections.sort(explorerBees);
         List<Solution> result = new ArrayList<>(explorerBees.size());
-        for (Solution explorer: explorerBees) {
-            Solution best = new BeeSwarm(explorer, 10, 3, schedFactory, executor).run();
+        for (int i = 0; i < explorerBees.size(); ++i) {
+            Solution explorer = explorerBees.get(i);
+            int carrierBeeCount = (explorerBees.size() - i) * 10;
+            Solution best = new BeeSwarm(explorer, carrierBeeCount, 3, schedFactory, executor).run();
             result.add(best);
         }
         return result;

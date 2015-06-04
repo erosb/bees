@@ -49,6 +49,15 @@ public class WeeklyScheduling {
         }
         return null;
     }
+    
+    public WeekendShift weekendShiftOf(Employee e) {
+        for (WeekendShift candidate: weekendSched.keySet()) {
+            if (weekendSched.get(candidate).contains(e)) {
+                return candidate;
+            }
+        }
+        return null;
+    }
 
     
 }

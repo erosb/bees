@@ -25,5 +25,14 @@ public class Solution extends ArrayList<WeeklyScheduling> implements Comparable<
     public int compareTo(Solution o) {
         return quality.compareTo(o.quality);
     }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < size(); ++i) {
+            sb.append("===Week " + i +"===\n");
+            sb.append(get(i).toString());
+        }
+        return sb.toString();
+    }
 
 }

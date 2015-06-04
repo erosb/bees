@@ -24,7 +24,7 @@ public class Problem {
         weekendReqs.put(WeekendShift.DAY, weekendReqs());
         weekendReqs.put(WeekendShift.NIGHT  , weekendReqs());
         WeeklyRequirement weeklyReq = new WeeklyRequirement(weekdayReqs, weekendReqs);
-        return new Problem(employees, weeklyReq, 2);
+        return new Problem(employees, weeklyReq, 4);
     }
     
     public static Set<Employee> employees(int count, Skill... skills) {
