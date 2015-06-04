@@ -86,13 +86,31 @@ public class SchedulingFactory {
     public Solution randomSwap(Solution original) {
         int weekIdx = random.nextInt(original.size());
         List<WeeklyScheduling> newSched = new ArrayList<>(original.size());
-        if (Math.random() < 0.5) {
+        List<Employee> unscheduledEmployees;
+        double rand = Math.random();
+        if (rand < 0.5) {
             for (int i = 0; i < original.size(); ++i) {
                 WeeklyScheduling origWeeklySched = original.get(i);
                 if (i == weekIdx) {
                 newSched.add(new WeeklyScheduling(origWeeklySched.weekdaySched(), randomizeWeekendSched(origWeeklySched)));
                 } else {
                     newSched.add(origWeeklySched);
+                }
+            }
+        } else if (rand < 0.75 && !(unscheduledEmployees = original.unscheduledEmployeesForWeekdays(weekIdx, problem)).isEmpty()) {
+            Employee replacement = unscheduledEmployees.get(random.nextInt(unscheduledEmployees.size()));
+            WeeklyScheduling weeklySched = original.get(weekIdx);
+            WeekdayShift[] allShifts = WeekdayShift.values();
+            WeekdayShift changedShift = allShifts[random.nextInt(allShifts.length)];
+            for (WeeklyScheduling origWeekSched: original) {
+                if (origWeekSched == weeklySched) {
+                    List<Employee> newEmps = new ArrayList<>(weeklySched.weekdaySched().get(changedShift));
+                    newEmps.set(random.nextInt(newEmps.size() - 1), replacement);
+                    Map<WeekdayShift, Set<Employee>> weekdaySched = new HashMap<>(origWeekSched.weekdaySched());
+                    weekdaySched.put(changedShift, new HashSet<>(newEmps));
+                    newSched.add(new WeeklyScheduling(weekdaySched, origWeekSched.weekendSched()));
+                } else {
+                    newSched.add(origWeekSched);
                 }
             }
         } else {

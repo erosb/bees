@@ -18,6 +18,8 @@ import bees.model.WeeklyScheduling;
 
 public class Solver {
     
+    private static final double KEPT_BEE_RATIO = 0.65;
+
     private final Problem problem;
     
     private final int explorerBeeCount;
@@ -49,7 +51,15 @@ public class Solver {
                 .mapToObj(i -> schedFactory.randomScheduling())
                 .collect(Collectors.toList());
         for (int i = 0; i < iterationCount; ++i) {
-            explorerBees = runSwarms(explorerBees);
+            List<Solution> bestBeesOfSwarms = runSwarms(explorerBees);
+            explorerBees = new ArrayList<>(bestBeesOfSwarms.size());
+            int j;
+            for (j = 0; j < bestBeesOfSwarms.size() * KEPT_BEE_RATIO; ++j) {
+                explorerBees.add(bestBeesOfSwarms.get(j));
+            }
+            for (; j < bestBeesOfSwarms.size(); ++j) {
+                explorerBees.add(schedFactory.randomScheduling());
+            }
             System.out.println(i + "th iteration: " + Collections.min(explorerBees).quality());
         }
         executor.shutdown();

@@ -44,7 +44,7 @@ public class BeeSwarm {
     private void moveBees() {
         for (int i = 0; i < carrierBeeCount; ++i) {
             Solution original = swarm.get(random.nextInt(swarm.size()));
-            complService.submit(() -> schedFactory.randomSwap(original));
+            complService.submit(() -> trySwapping(original));
         }
         swarm.clear();
         for (int i = 0; i < carrierBeeCount; ++i) {
@@ -56,6 +56,14 @@ public class BeeSwarm {
                 throw new RuntimeException(e.getCause());
             }
         }
+    }
+
+    private Solution trySwapping(Solution original) {
+        Solution swapped = schedFactory.randomSwap(original);
+        if (swapped.compareTo(original) < 0) {
+            return swapped;
+        }
+        return Math.random() < 0.5 ? swapped : original;
     }
 
 }
