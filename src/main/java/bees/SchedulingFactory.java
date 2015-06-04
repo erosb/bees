@@ -85,6 +85,23 @@ public class SchedulingFactory {
 
     public Solution randomSwap(Solution original) {
         int weekIdx = random.nextInt(original.size());
+        List<WeeklyScheduling> newSched = new ArrayList<>(original.size());
+        if (Math.random() < 0.5) {
+            for (int i = 0; i < original.size(); ++i) {
+                WeeklyScheduling origWeeklySched = original.get(i);
+                if (i == weekIdx) {
+                newSched.add(new WeeklyScheduling(origWeeklySched.weekdaySched(), randomizeWeekendSched(origWeeklySched)));
+                } else {
+                    newSched.add(origWeeklySched);
+                }
+            }
+        } else {
+            performWeekdayShiftSwap(original, weekIdx, newSched);
+        }
+        return create(newSched);
+    }
+
+    private void performWeekdayShiftSwap(Solution original, int weekIdx, List<WeeklyScheduling> newSched) {
         WeeklyScheduling sched = original.get(weekIdx);
         Map<WeekdayShift, Set<Employee>> origWeekdaySched = sched.weekdaySched();
         WeekdayShift[] allWeekdayShifts = WeekdayShift.values();
@@ -101,7 +118,6 @@ public class SchedulingFactory {
         Employee tmp = fromShiftEmployees.get(fromEmployeeIdx);
         fromShiftEmployees.set(fromEmployeeIdx, toShiftEmployees.get(toEmployeeIdx));
         toShiftEmployees.set(toEmployeeIdx, tmp);
-        List<WeeklyScheduling> newSched = new ArrayList<>(original.size());
         for (int i = 0; i < original.size(); ++i) {
             WeeklyScheduling origWeeklySched = original.get(i);
             if (i == weekIdx) {
@@ -116,13 +132,12 @@ public class SchedulingFactory {
                     }
                 }
                 WeeklyScheduling newWeeklySched = new WeeklyScheduling(newWeekdaySched,
-                        randomizeWeekendSched(origWeeklySched));
+                        origWeeklySched.weekendSched());
                 newSched.add(newWeeklySched);
             } else {
                 newSched.add(origWeeklySched);
             }
         }
-        return create(newSched);
     }
 
     private Map<WeekendShift, Set<Employee>> randomizeWeekendSched(WeeklyScheduling weeklySched) {
