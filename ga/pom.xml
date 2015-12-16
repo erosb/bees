@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>scheduling</groupId>
 		<artifactId>parent</artifactId>
@@ -12,7 +12,7 @@
 
 	<groupId>scheduling</groupId>
 	<artifactId>ga</artifactId>
-	
+
 
 	<packaging>jar</packaging>
 
@@ -32,9 +32,19 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>scheduling</groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.4</version>
 		</dependency>
 	</dependencies>
 

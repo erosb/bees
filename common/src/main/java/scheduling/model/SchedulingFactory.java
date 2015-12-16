@@ -170,4 +170,34 @@ public class SchedulingFactory {
         return weeklySched.weekendSched();
     }
 
+    public Solution cross(Solution entity1, Solution entity2) {
+      List<WeeklyScheduling> rval = new ArrayList<>();
+      for (int i = 0; i < entity1.size(); ++i) {
+        rval.add(cross(entity1.get(i), entity2.get(i)));
+      }
+      return create(rval);
+    }
+
+    private WeeklyScheduling cross(WeeklyScheduling sched1,
+        WeeklyScheduling sched2) {
+      Map<WeekdayShift, Set<Employee>> weekdaySched = new HashMap<WeekdayShift, Set<Employee>>();
+      for (WeekdayShift shift: WeekdayShift.values()) {
+        weekdaySched.put(shift, new HashSet<>());
+      }
+      for (Employee emp: problem.employees()) {
+        WeekdayShift shift ;
+        if (Math.random() < 0.5) {
+          shift = sched1.weekdayShiftOf(emp);
+        } else {
+          shift = sched2.weekdayShiftOf(emp);
+        }
+        if (shift != null) {
+//        System.out.println(weekdaySched + " " + shift);
+          weekdaySched.get(shift).add(emp);
+        }
+      }
+      Map<WeekendShift, Set<Employee>> weekendSched = (Math.random() < 0.5 ? sched1 : sched2).weekendSched() ;
+      return new WeeklyScheduling(weekdaySched, weekendSched );
+    }
+
 }
