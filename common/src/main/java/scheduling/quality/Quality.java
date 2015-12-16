@@ -1,4 +1,4 @@
-package bees;
+package scheduling.quality;
 
 public class Quality implements Comparable<Quality> {
 

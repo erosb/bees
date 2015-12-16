@@ -1,6 +1,8 @@
-package bees.model;
+package scheduling.model;
 
 import org.junit.Test;
+
+import scheduling.model.Interval;
 import static org.junit.Assert.*;
 public class IntervalTest {
     

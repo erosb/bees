@@ -1,10 +1,11 @@
-package bees.model;
+package scheduling.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import bees.Quality;
+import scheduling.quality.Quality;
+
 
 public class Solution extends ArrayList<WeeklyScheduling> implements Comparable<Solution> {
     private static final long serialVersionUID = -8233015353134023195L;

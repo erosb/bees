@@ -1,4 +1,4 @@
-package bees.model;
+package scheduling.model;
 
 import static java.util.Objects.requireNonNull;
 

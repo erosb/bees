@@ -1,7 +1,9 @@
-package bees.model;
+package scheduling.model;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import scheduling.model.Skill;
 public class SkillTest {
     
     @Test

@@ -1,16 +1,16 @@
-package bees;
+package scheduling.quality;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import bees.model.Employee;
-import bees.model.Problem;
-import bees.model.ShiftRequirement;
-import bees.model.Skill;
-import bees.model.WeekdayShift;
-import bees.model.WeekendShift;
-import bees.model.WeeklyRequirement;
+import scheduling.model.Employee;
+import scheduling.model.Problem;
+import scheduling.model.ShiftRequirement;
+import scheduling.model.Skill;
+import scheduling.model.WeekdayShift;
+import scheduling.model.WeekendShift;
+import scheduling.model.WeeklyRequirement;
 
 public class TestSupport {
     

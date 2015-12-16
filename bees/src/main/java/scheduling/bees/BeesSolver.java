@@ -1,4 +1,4 @@
-package bees.solver;
+package scheduling.bees;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,13 +10,13 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import bees.SchedulingEvaluator;
-import bees.SchedulingFactory;
-import bees.model.Problem;
-import bees.model.Solution;
-import bees.model.WeeklyScheduling;
+import scheduling.model.Problem;
+import scheduling.model.SchedulingFactory;
+import scheduling.model.Solution;
+import scheduling.model.WeeklyScheduling;
+import scheduling.quality.SchedulingEvaluator;
 
-public class Solver {
+public class BeesSolver {
     
     private static final double KEPT_BEE_RATIO = 0.65;
 
@@ -32,7 +32,7 @@ public class Solver {
     
     private final int iterationCount;
     
-    public Solver(Problem p, int explorerBeeCount, int iterationCount) {
+    public BeesSolver(Problem p, int explorerBeeCount, int iterationCount) {
         this.problem = p;
         this.explorerBeeCount = explorerBeeCount;
         this.iterationCount = iterationCount;
@@ -43,7 +43,7 @@ public class Solver {
 
     public static void main(String[] args) {
         Problem p = Problem.getDefault();
-        new Solver(p, 8, 500).solve();
+        new BeesSolver(p, 8, 500).solve();
     }
 
     public void solve() {

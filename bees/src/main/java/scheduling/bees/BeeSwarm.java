@@ -1,4 +1,4 @@
-package bees.solver;
+package scheduling.bees;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,8 +9,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
 
-import bees.SchedulingFactory;
-import bees.model.Solution;
+import scheduling.model.SchedulingFactory;
+import scheduling.model.Solution;
 
 public class BeeSwarm {
 

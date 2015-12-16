@@ -1,4 +1,4 @@
-package bees;
+package scheduling.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,13 +12,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import bees.model.Employee;
-import bees.model.Problem;
-import bees.model.ShiftRequirement;
-import bees.model.Solution;
-import bees.model.WeekdayShift;
-import bees.model.WeekendShift;
-import bees.model.WeeklyScheduling;
+import scheduling.quality.SchedulingEvaluator;
+
 
 public class SchedulingFactory {
 
