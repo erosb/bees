@@ -49,6 +49,18 @@ public class Population extends AbstractList<Solution>{
   public Solution get(int index) {
     return storage.get(index);
   }
+  
+  
+
+  @Override
+  public boolean removeAll(Collection<?> c) {
+    return storage.removeAll(c);
+  }
+
+  @Override
+  public boolean addAll(Collection<? extends Solution> c) {
+    return storage.addAll(c);
+  }
 
   public List<Solution> select(int toBeSelected) {
     return IntStream.range(0, toBeSelected)

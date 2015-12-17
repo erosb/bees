@@ -1,6 +1,7 @@
 package scheduling.model;
 
 import java.util.ArrayList;
+import static java.lang.String.format;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,6 +127,12 @@ public class SchedulingFactory {
         } while (fromShift == toShift);
         List<Employee> fromShiftEmployees = new ArrayList<>(origWeekdaySched.get(fromShift));
         List<Employee> toShiftEmployees = new ArrayList<>(origWeekdaySched.get(toShift));
+        if (fromShiftEmployees.isEmpty() || toShiftEmployees.isEmpty()) {
+          System.out.println("skipping mutation");
+          return;
+        } else {
+          System.out.println("performing mutation");
+        }
         int fromEmployeeIdx = random.nextInt(fromShiftEmployees.size());
         int toEmployeeIdx = random.nextInt(toShiftEmployees.size());
         Employee tmp = fromShiftEmployees.get(fromEmployeeIdx);
@@ -175,7 +182,9 @@ public class SchedulingFactory {
       for (int i = 0; i < entity1.size(); ++i) {
         rval.add(cross(entity1.get(i), entity2.get(i)));
       }
-      return create(rval);
+      Solution offspring = create(rval);
+//      System.out.println(format("crossing:\nentity1:\n%s\nentity2:\n%s\noffspring:\n%s", entity1, entity2, offspring));
+      return offspring;
     }
 
     private WeeklyScheduling cross(WeeklyScheduling sched1,
@@ -188,11 +197,16 @@ public class SchedulingFactory {
         WeekdayShift shift ;
         if (Math.random() < 0.5) {
           shift = sched1.weekdayShiftOf(emp);
+          if (shift == null) {
+            shift = sched2.weekdayShiftOf(emp);
+          }
         } else {
           shift = sched2.weekdayShiftOf(emp);
+          if (shift == null) {
+            shift = sched1.weekdayShiftOf(emp);
+          }
         }
         if (shift != null) {
-//        System.out.println(weekdaySched + " " + shift);
           weekdaySched.get(shift).add(emp);
         }
       }

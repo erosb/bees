@@ -1,8 +1,10 @@
 package scheduling.ga;
 
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.List;
+import static java.util.stream.Collectors.*;
 
 import scheduling.model.Problem;
 import scheduling.model.SchedulingFactory;
@@ -30,6 +32,11 @@ public class GASolver {
         offsprings.add(offspring1);
         offsprings.add(offspring2);
       }
+      population.removeAll(parents);
+      Collection<Solution> all = new ArrayList<Solution>(parents.size() * 2);
+      all.addAll(parents);
+      all.addAll(offsprings);
+      population.addAll(all.stream().sorted().limit(150).collect(toList()));
     }
   }
   
